@@ -3,9 +3,9 @@ import urllib3
 from datetime import datetime
 import time
 from bs4 import BeautifulSoup
+import update_handler
 
-def handle_update():
-    print("There was an update to the page")
+check_interval = 10
 
 @click.command()
 @click.argument('url')
@@ -22,11 +22,11 @@ def get_webpage(url):
         else:
             if current_page != soup.prettify():
                 print("Update detected")
-                handle_update(current_page, soup.prettify())
+                update_handler.handle_update(url, current_page, soup.prettify())
                 current_page = soup.prettify()
             else:
                 print(f"Last update at: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-                time.sleep(1)
+                time.sleep(check_interval)
 
  
 if __name__ == '__main__':
